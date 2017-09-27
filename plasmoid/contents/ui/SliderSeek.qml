@@ -34,22 +34,34 @@ RowLayout {
     Layout.minimumHeight: implicitHeight + units.smallSpacing
 
     TimeLabel {
-        id: labelLeft
+        id: labelRight
 
         property bool labelSwitch: plasmoid.configuration.TimeLabelSwitch
 
-        currentTime: labelSwitch ? mpris2.length : slider.value
+        currentTime: slider.value
         interactive: true
-        horizontalAlignment: Text.AlignHCenter
-        minusFrontOfZero: false
+        minusFrontOfZero: !labelSwitch
 
         onCurrentTimeChanged: {
-            positionUpdate()
+            if (labelSwitch)
+                positionUpdate()
+            else
+                remainingUpdate()
+        }
+
+        onLabelSwitchChanged: {
+            if (labelSwitch)
+                positionUpdate()
+            else
+                remainingUpdate()
         }
 
         onClicked: plasmoid.configuration.TimeLabelSwitch = !labelSwitch
 
+        horizontalAlignment: Text.AlignHCenter
+
         Layout.minimumWidth: units.largeSpacing * 2.2
+        Layout.alignment: Qt.AlignHCenter
     }
 
     PlasmaComponents.Slider {
@@ -103,33 +115,19 @@ RowLayout {
     }
 
     TimeLabel {
-        id: labelRight
+        id: labelLeft
 
-        property bool labelSwitch: plasmoid.configuration.TimeLabelSwitch
-
-        currentTime: slider.value
+        currentTime: mpris2.length
         interactive: true
-        minusFrontOfZero: !labelSwitch
+        horizontalAlignment: Text.AlignHCenter
+        minusFrontOfZero: false
 
         onCurrentTimeChanged: {
-            if (labelSwitch)
-                positionUpdate()
-            else
-                remainingUpdate()
-        }
-
-        onLabelSwitchChanged: {
-            if (labelSwitch)
-                positionUpdate()
-            else
-                remainingUpdate()
+            positionUpdate()
         }
 
         onClicked: plasmoid.configuration.TimeLabelSwitch = !labelSwitch
 
-        horizontalAlignment: Text.AlignHCenter
-
         Layout.minimumWidth: units.largeSpacing * 2.2
-        Layout.alignment: Qt.AlignHCenter
     }
 }
