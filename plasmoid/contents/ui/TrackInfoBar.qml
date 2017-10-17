@@ -54,24 +54,18 @@ PlaybackItem {
 
         flow: vertical ? Flow.TopToBottom : Flow.LeftToRight
 
-        Item {
-            width: buttonSize.width
-            height: buttonSize.height
+        Loader {
+            id: loader
 
-            property alias iconSource: button.iconSource
+            width: status === Loader.Ready ? item.width + buttonSize.width : 0
+            height: status === Loader.Ready ? item.height : 0
 
-            IconWidget {
-                id: button
+            source: 'PlaybackBar.qml'
 
-                svg: PlasmaCore.Svg {
-                    imagePath: 'icons/media'
-                }
-                iconSource: 'media-playback-start'
-                enabled: mpris2.sourceActive
-
-                size: Math.min(buttonSize.width, buttonSize.height)
-                onClicked: infoBar.playPause()
-                anchors.centerIn: parent
+            onLoaded: {
+                item.buttonSize = Qt.binding(function () {
+                    return iconSize
+                })
             }
         }
 
