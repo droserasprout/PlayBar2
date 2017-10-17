@@ -77,7 +77,7 @@ PlaybackItem {
 
         Item {
             id: content
-            width: vertical ? buttonSize.width : size
+            width: vertical ? buttonSize.width : trackinfo.width + buttonSize.width
             height: vertical ? size : buttonSize.height
             clip: true
 
@@ -105,7 +105,7 @@ PlaybackItem {
                     angle: vertical ? (leftEdge ? 270 : 90) : 0
                 }
 
-                width: content.size
+                width: auto
                 height: maxWidth
 
                 text: mpris2.title && mpris2.artist ? i18n('%1 <b>By</b> %2', mpris2.title, mpris2.artist)
